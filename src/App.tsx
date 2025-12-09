@@ -13,6 +13,10 @@ import Auth from "./pages/Auth";
 import Messages from "./pages/Messages";
 import Create from "./pages/Create";
 import NotFound from "./pages/NotFound";
+import NewsList from "./pages/NewsList";
+import NewsArticle from "./pages/NewsArticle";
+import AdminNewsEditor from "./pages/AdminNewsEditor";
+import AdminNewsList from "./pages/AdminNewsList";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -112,6 +116,47 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Create />
+                </ProtectedRoute>
+              }
+            />
+            {/* News Routes */}
+            <Route
+              path="/news"
+              element={
+                <ProtectedRoute>
+                  <NewsList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/news/:slug"
+              element={
+                <ProtectedRoute>
+                  <NewsArticle />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/news"
+              element={
+                <ProtectedRoute>
+                  <AdminNewsList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/news/new"
+              element={
+                <ProtectedRoute>
+                  <AdminNewsEditor />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/news/:id/edit"
+              element={
+                <ProtectedRoute>
+                  <AdminNewsEditor />
                 </ProtectedRoute>
               }
             />
