@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   MapPin,
   Calendar,
   Link as LinkIcon,
-  Edit3,
   Award,
   Briefcase,
   GraduationCap,
@@ -18,6 +18,9 @@ import {
   Bookmark,
   Settings,
 } from "lucide-react";
+import { EditProfileModal } from "@/components/profile/EditProfileModal";
+import { SkillsSection } from "@/components/profile/SkillsSection";
+import { ProjectsSection } from "@/components/profile/ProjectsSection";
 
 const badges = [
   { icon: Trophy, label: "Top Contributor", color: "bg-secondary" },
@@ -74,6 +77,7 @@ type TabType = "posts" | "projects" | "saved";
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState<TabType>("posts");
+  const { profile, user } = useAuth();
 
   const tabs = [
     { key: "posts" as TabType, icon: Grid, label: "Posts" },
@@ -90,14 +94,15 @@ export default function Profile() {
           <div className="h-32 bg-gradient-to-r from-accent via-secondary to-info border-b-2 border-foreground relative">
             <div className="absolute -bottom-12 left-6">
               <div className="w-24 h-24 bg-background border-4 border-foreground shadow-md flex items-center justify-center">
-                <span className="font-bold text-3xl">AK</span>
+                <span className="font-bold text-3xl">
+                  {profile?.username && profile.username.trim()
+                    ? profile.username.slice(0, 2).toUpperCase()
+                    : user?.email?.slice(0, 2).toUpperCase() || "U"}
+                </span>
               </div>
             </div>
             <div className="absolute top-4 right-4 flex gap-2">
-              <Button variant="secondary" size="sm" className="gap-2">
-                <Edit3 className="w-4 h-4" />
-                Edit
-              </Button>
+              <EditProfileModal />
               <Button variant="outline" size="icon" className="w-9 h-9 bg-background">
                 <Settings className="w-4 h-4" />
               </Button>
@@ -109,12 +114,25 @@ export default function Profile() {
             <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <h1 className="text-2xl font-bold">Aditya Kumar</h1>
-                  <span className="w-5 h-5 bg-info border border-foreground flex items-center justify-center text-info-foreground text-xs">
-                    ✓
-                  </span>
+                  <h1 className="text-2xl font-bold">
+                    {profile?.full_name || (profile?.username && profile.username.trim()
+                      ? profile.username
+                        .split("_")
+                        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                        .join(" ")
+                      : user?.email?.split("@")[0] || "User")}
+                  </h1>
+                  {user && (
+                    <span className="w-5 h-5 bg-info border border-foreground flex items-center justify-center text-info-foreground text-xs">
+                      ✓
+                    </span>
+                  )}
                 </div>
-                <p className="text-muted-foreground">@aditya_codes</p>
+                <p className="text-muted-foreground">
+                  {profile?.username && profile.username.trim()
+                    ? `@${profile.username}`
+                    : user?.email || "@user"}
+                </p>
               </div>
               <div className="flex gap-2">
                 <Button variant="accent" size="sm">
@@ -126,46 +144,37 @@ export default function Profile() {
               </div>
             </div>
 
-            <p className="mb-4">
-              CS undergrad passionate about building products that matter. 
-              Currently exploring the intersection of AI and education. 
-              Open to internship opportunities! 🚀
+            <p className="mb-4 whitespace-pre-wrap">
+              {profile?.bio || "No bio yet."}
             </p>
 
-            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
-              <span className="flex items-center gap-1">
-                <GraduationCap className="w-4 h-4" />
-                IIT Delhi • B.Tech CS '26
-              </span>
-              <span className="flex items-center gap-1">
-                <MapPin className="w-4 h-4" />
-                New Delhi, India
-              </span>
-              <span className="flex items-center gap-1">
-                <Calendar className="w-4 h-4" />
-                Joined March 2023
-              </span>
-              <span className="flex items-center gap-1">
-                <LinkIcon className="w-4 h-4" />
-                <a href="#" className="text-info hover:underline">
-                  github.com/adityak
-                </a>
-              </span>
-            </div>
-
-            <div className="flex gap-6 text-sm">
-              <span>
-                <strong className="text-foreground">1,234</strong>{" "}
-                <span className="text-muted-foreground">Followers</span>
-              </span>
-              <span>
-                <strong className="text-foreground">567</strong>{" "}
-                <span className="text-muted-foreground">Following</span>
-              </span>
-              <span>
-                <strong className="text-foreground">4,500</strong>{" "}
-                <span className="text-muted-foreground">XP</span>
-              </span>
+            <div className="flex flex-col gap-2 text-sm text-muted-foreground mb-4">
+              {profile?.headline && (
+                <span className="flex items-center gap-2">
+                  <GraduationCap className="w-4 h-4" />
+                  {profile.headline}
+                </span>
+              )}
+              {profile?.location && (
+                <span className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  {profile.location}
+                </span>
+              )}
+              {profile?.website && (
+                <span className="flex items-center gap-2">
+                  <LinkIcon className="w-4 h-4" />
+                  <a
+                    href={profile.website.startsWith("http") ? profile.website : `https://${profile.website}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-info hover:underline"
+                  >
+                    {profile.website}
+                  </a>
+                </span>
+              )}
+              {/* Join date could be added here if available in profile */}
             </div>
           </div>
 
@@ -192,33 +201,7 @@ export default function Profile() {
           {/* Sidebar */}
           <aside className="space-y-6">
             {/* Skills */}
-            <div className="bg-card border-2 border-foreground shadow-sm">
-              <div className="p-4 border-b-2 border-foreground bg-muted flex items-center justify-between">
-                <h3 className="font-bold">SKILLS</h3>
-                <Button variant="ghost" size="sm" className="h-7">
-                  Add
-                </Button>
-              </div>
-              <div className="p-4">
-                <div className="flex flex-wrap gap-2">
-                  {skills.map((skill) => (
-                    <span
-                      key={skill.name}
-                      className={`border-2 border-foreground px-2 py-1 text-sm font-medium flex items-center gap-1 ${
-                        skill.verified ? "bg-success/20" : "bg-muted"
-                      }`}
-                    >
-                      {skill.name}
-                      {skill.verified && (
-                        <span className="w-3 h-3 bg-success text-success-foreground text-[8px] flex items-center justify-center">
-                          ✓
-                        </span>
-                      )}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <SkillsSection userId={user?.id || ""} isOwnProfile={!!user} />
 
             {/* Experience */}
             <div className="bg-card border-2 border-foreground shadow-sm">
@@ -241,9 +224,8 @@ export default function Profile() {
                         {exp.duration}
                       </span>
                       <span
-                        className={`text-xs px-2 py-0.5 border border-foreground ${
-                          exp.type === "Internship" ? "bg-info/20" : "bg-secondary"
-                        }`}
+                        className={`text-xs px-2 py-0.5 border border-foreground ${exp.type === "Internship" ? "bg-info/20" : "bg-secondary"
+                          }`}
                       >
                         {exp.type}
                       </span>
@@ -288,11 +270,10 @@ export default function Profile() {
                   <button
                     key={tab.key}
                     onClick={() => setActiveTab(tab.key)}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 font-bold transition-colors ${
-                      activeTab === tab.key
-                        ? "bg-primary text-primary-foreground"
-                        : "hover:bg-muted"
-                    }`}
+                    className={`flex-1 flex items-center justify-center gap-2 py-3 font-bold transition-colors ${activeTab === tab.key
+                      ? "bg-primary text-primary-foreground"
+                      : "hover:bg-muted"
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     {tab.label}
@@ -303,36 +284,7 @@ export default function Profile() {
 
             {/* Tab Content */}
             {activeTab === "projects" && (
-              <div className="space-y-4">
-                {projects.map((project) => (
-                  <div
-                    key={project.id}
-                    className="bg-card border-2 border-foreground shadow-sm p-4 hover:shadow-md transition-shadow"
-                  >
-                    <h3 className="font-bold text-lg mb-1">{project.title}</h3>
-                    <p className="text-muted-foreground mb-3">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {project.tech.map((t) => (
-                        <span
-                          key={t}
-                          className="bg-info/20 border border-foreground px-2 py-0.5 text-xs font-medium"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex gap-4 text-sm text-muted-foreground">
-                      <span>❤️ {project.likes}</span>
-                      <span>👁️ {project.views} views</span>
-                    </div>
-                  </div>
-                ))}
-                <Button variant="outline" className="w-full">
-                  Add New Project
-                </Button>
-              </div>
+              <ProjectsSection userId={user?.id || ""} isOwnProfile={!!user} />
             )}
 
             {activeTab === "posts" && (

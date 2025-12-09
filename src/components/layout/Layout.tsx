@@ -7,7 +7,11 @@ interface LayoutProps {
   showNav?: boolean;
 }
 
+import { useLocation } from "react-router-dom";
+
 export function Layout({ children, showNav = true }: LayoutProps) {
+  const location = useLocation();
+
   return (
     <div className="min-h-screen bg-background">
       {showNav && <Navbar />}

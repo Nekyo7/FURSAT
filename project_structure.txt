@@ -1,0 +1,527 @@
+================================================================================
+                    FURSAT NEXUS - PROJECT STRUCTURE ANALYSIS
+================================================================================
+
+PROJECT OVERVIEW
+================================================================================
+
+FURSAT Nexus is a brutalist-designed college social media platform built with 
+modern web technologies. It's a React-based single-page application with a 
+unique, bold design aesthetic featuring sharp edges, hard shadows, and vibrant 
+colors.
+
+WHAT IS THIS PROJECT?
+================================================================================
+
+A college-focused social networking platform that includes:
+  - Social Feed with posts, stories, and interactions
+  - Communities/Circles for topic-based groups
+  - Job/Internship Opportunities board
+  - Direct Messaging system
+  - User Profiles with XP and badges
+  - Content Creation tools
+
+TECHNOLOGY STACK
+================================================================================
+
+Category              Technology                Version
+--------------------------------------------------------------------------------
+Framework             React                     18.3.1
+Language              TypeScript                5.8.3
+Build Tool            Vite                      7.2.6
+Routing               React Router DOM          6.30.1
+Styling               Tailwind CSS              3.4.17
+UI Library            shadcn/ui (Radix UI)      Latest
+State Management      TanStack Query            5.83.0
+Forms                 React Hook Form + Zod     7.61.1 + 3.25.76
+Backend               Supabase                  2.86.0
+Icons                 Lucide React              0.462.0
+
+COMPLETE DIRECTORY STRUCTURE
+================================================================================
+
+fursat-nexus/
+│
+├── public/                             Static assets
+│   ├── favicon.ico
+│   ├── placeholder.svg
+│   └── robots.txt
+│
+├── src/                                Source code
+│   │
+│   ├── components/                     React components
+│   │   ├── layout/                     Layout components (3 files)
+│   │   │   ├── Layout.tsx             Main layout wrapper
+│   │   │   ├── Navbar.tsx             Top navigation bar
+│   │   │   └── MobileNav.tsx          Mobile bottom navigation
+│   │   │
+│   │   ├── ui/                         shadcn/ui components (48 files)
+│   │   │   ├── button.tsx
+│   │   │   ├── card.tsx
+│   │   │   ├── input.tsx
+│   │   │   ├── dialog.tsx
+│   │   │   ├── form.tsx
+│   │   │   ├── table.tsx
+│   │   │   ├── toast.tsx
+│   │   │   ├── accordion.tsx
+│   │   │   ├── alert-dialog.tsx
+│   │   │   ├── alert.tsx
+│   │   │   ├── aspect-ratio.tsx
+│   │   │   ├── avatar.tsx
+│   │   │   ├── badge.tsx
+│   │   │   ├── breadcrumb.tsx
+│   │   │   ├── calendar.tsx
+│   │   │   ├── carousel.tsx
+│   │   │   ├── chart.tsx
+│   │   │   ├── checkbox.tsx
+│   │   │   ├── collapsible.tsx
+│   │   │   ├── command.tsx
+│   │   │   ├── context-menu.tsx
+│   │   │   ├── drawer.tsx
+│   │   │   ├── dropdown-menu.tsx
+│   │   │   ├── hover-card.tsx
+│   │   │   ├── input-otp.tsx
+│   │   │   ├── label.tsx
+│   │   │   ├── menubar.tsx
+│   │   │   ├── navigation-menu.tsx
+│   │   │   ├── pagination.tsx
+│   │   │   ├── popover.tsx
+│   │   │   ├── progress.tsx
+│   │   │   ├── radio-group.tsx
+│   │   │   ├── resizable.tsx
+│   │   │   ├── scroll-area.tsx
+│   │   │   ├── select.tsx
+│   │   │   ├── separator.tsx
+│   │   │   ├── sheet.tsx
+│   │   │   ├── sidebar.tsx
+│   │   │   ├── skeleton.tsx
+│   │   │   ├── slider.tsx
+│   │   │   ├── sonner.tsx
+│   │   │   ├── switch.tsx
+│   │   │   ├── tabs.tsx
+│   │   │   ├── textarea.tsx
+│   │   │   ├── toaster.tsx
+│   │   │   ├── toggle-group.tsx
+│   │   │   ├── toggle.tsx
+│   │   │   └── tooltip.tsx
+│   │   │
+│   │   └── NavLink.tsx                Navigation link component
+│   │
+│   ├── pages/                          Page components (10 files)
+│   │   ├── Landing.tsx                Landing/login page (21.7 KB)
+│   │   ├── Feed.tsx                   Main feed page (20.1 KB)
+│   │   ├── Circles.tsx                Communities page (11.7 KB)
+│   │   ├── Opportunities.tsx          Jobs/internships (10.2 KB)
+│   │   ├── Profile.tsx                User profile (14.7 KB)
+│   │   ├── Messages.tsx               Messaging/chat (11.1 KB)
+│   │   ├── Create.tsx                 Create post/content (13.2 KB)
+│   │   ├── Auth.tsx                   Authentication (4.4 KB)
+│   │   ├── NotFound.tsx               404 error page
+│   │   └── Index.tsx                  Index/redirect page
+│   │
+│   ├── contexts/                       React contexts (1 file)
+│   │   └── AuthContext.tsx            Authentication context (11.8 KB)
+│   │
+│   ├── hooks/                          Custom React hooks (3 files)
+│   │   ├── use-mobile.tsx             Mobile detection hook
+│   │   ├── use-toast.ts               Toast notification hook
+│   │   └── useAuth.ts                 Authentication hook
+│   │
+│   ├── lib/                            Utility libraries (2 files)
+│   │   ├── utils.ts                   Utility functions (cn helper)
+│   │   └── supabase.ts                Supabase client config
+│   │
+│   ├── App.tsx                        Main app component (routing)
+│   ├── main.tsx                       Entry point
+│   ├── index.css                      Global styles & design tokens
+│   └── vite-env.d.ts                  Vite type definitions
+│
+├── node_modules/                       Dependencies
+│
+├── Configuration Files
+│   ├── .env                           Environment variables
+│   ├── .gitignore                     Git ignore rules
+│   ├── components.json                shadcn/ui configuration
+│   ├── eslint.config.js              ESLint configuration
+│   ├── index.html                     HTML template
+│   ├── package.json                   Dependencies & scripts
+│   ├── package-lock.json              Dependency lock file
+│   ├── bun.lockb                      Bun lock file
+│   ├── postcss.config.js             PostCSS configuration
+│   ├── tailwind.config.ts            Tailwind CSS configuration
+│   ├── tsconfig.json                  TypeScript configuration
+│   ├── tsconfig.app.json             App-specific TS config
+│   ├── tsconfig.node.json            Node-specific TS config
+│   └── vite.config.ts                Vite build configuration
+│
+└── Documentation Files
+    ├── README.md                      Project documentation
+    ├── PROJECT_STRUCTURE.md           Structure guide (markdown)
+    ├── project_structure.txt          This file (text version)
+    ├── STRUCTURE_TREE.txt             File tree
+    ├── SUPABASE_SETUP.md             Supabase setup guide
+    └── DEBUG_USERNAME.md              Debug notes
+
+DESIGN SYSTEM - BRUTALIST AESTHETIC
+================================================================================
+
+COLOR PALETTE (HSL-based)
+--------------------------------------------------------------------------------
+Background:     60° 100% 97%    Light cream
+Foreground:     0° 0% 0%        Black
+Primary:        0° 0% 0%        Black
+Secondary:      45° 100% 60%    Yellow
+Accent:         330° 100% 71%   Pink/Magenta
+Muted:          45° 30% 90%     Light yellow
+Success:        142° 76% 45%    Green
+Warning:        38° 92% 50%     Orange
+Info:           199° 89% 48%    Blue
+Destructive:    0° 84% 60%      Red
+
+TYPOGRAPHY
+--------------------------------------------------------------------------------
+Sans:           Space Grotesk   (headings, body text)
+Mono:           Space Mono      (labels, code, badges)
+
+SHADOWS (Hard-edged, no blur)
+--------------------------------------------------------------------------------
+shadow-xs:      2px 2px 0px
+shadow-sm:      3px 3px 0px
+shadow-md:      6px 6px 0px
+shadow-lg:      8px 8px 0px
+shadow-xl:      12px 12px 0px
+
+BORDERS
+--------------------------------------------------------------------------------
+Default:        2px solid       (thick borders)
+Border radius:  0rem            (sharp corners)
+
+APPLICATION ROUTES
+================================================================================
+
+Route               Page            Description
+--------------------------------------------------------------------------------
+/                   Landing         Login-first landing page
+/feed               Feed            Main social feed
+/circles            Circles         Communities/groups
+/opportunities      Opportunities   Jobs/internships board
+/profile            Profile         User profile with XP/badges
+/messages           Messages        Direct messaging
+/create             Create          Content creation
+/auth               Auth            Authentication flow
+*                   NotFound        404 error page
+
+KEY FEATURES
+================================================================================
+
+1. FEED PAGE (Main Hub)
+--------------------------------------------------------------------------------
+  - Three-column layout (desktop)
+  - Stories carousel
+  - Post creation interface
+  - Daily brief section
+  - Campus pulse sidebar
+  - Trending tags
+  - Upcoming events
+  - XP leaderboard
+  - Filter system: "For you", "Club drops", "Opportunities"
+
+2. LANDING PAGE
+--------------------------------------------------------------------------------
+  - Split-screen design
+  - Live bulletin board
+  - Feature showcase
+  - Stats display
+  - Login form integration
+
+3. AUTHENTICATION
+--------------------------------------------------------------------------------
+  - Supabase integration (configured)
+  - AuthContext for state management
+  - Protected routes ready
+
+4. UI COMPONENTS (48 shadcn/ui components)
+--------------------------------------------------------------------------------
+  - Form components (Button, Input, Select, etc.)
+  - Layout (Card, Separator, Scroll Area)
+  - Overlays (Dialog, Popover, Tooltip)
+  - Navigation (Tabs, Menubar, Breadcrumb)
+  - Data display (Table, Badge, Avatar)
+  - Feedback (Toast, Alert)
+
+DEVELOPMENT COMMANDS
+================================================================================
+
+Start development server (port 8080):
+  npm run dev
+
+Production build:
+  npm run build
+
+Development build:
+  npm run build:dev
+
+Run ESLint:
+  npm run lint
+
+Preview production build:
+  npm run preview
+
+KEY DEPENDENCIES
+================================================================================
+
+CORE
+--------------------------------------------------------------------------------
+  react + react-dom                 18.3.1
+  react-router-dom                  6.30.1
+  typescript                        5.8.3
+
+UI & STYLING
+--------------------------------------------------------------------------------
+  tailwindcss                       3.4.17
+  @radix-ui/*                       (50+ Radix UI primitives)
+  lucide-react                      0.462.0
+  next-themes                       0.3.0
+  tailwind-merge                    2.6.0
+  tailwindcss-animate               1.0.7
+  class-variance-authority          0.7.1
+
+FORMS & VALIDATION
+--------------------------------------------------------------------------------
+  react-hook-form                   7.61.1
+  zod                               3.25.76
+  @hookform/resolvers               3.10.0
+
+DATA & STATE
+--------------------------------------------------------------------------------
+  @tanstack/react-query             5.83.0
+  @supabase/supabase-js             2.86.0
+
+UTILITIES
+--------------------------------------------------------------------------------
+  clsx                              2.1.1
+  date-fns                          3.6.0
+  embla-carousel-react              8.6.0
+  recharts                          2.15.4
+  sonner                            1.7.4
+  vaul                              0.9.9
+  cmdk                              1.1.1
+  input-otp                         1.4.2
+  react-day-picker                  8.10.1
+  react-resizable-panels            2.1.9
+
+DATA FLOW ARCHITECTURE
+================================================================================
+
+User Interaction
+      ↓
+React Components
+      ↓
+React Hook Form (forms) / useState (local state)
+      ↓
+TanStack Query (server state)
+      ↓
+Supabase Client
+      ↓
+Backend API
+
+CURRENT STATUS
+================================================================================
+
+COMPLETED:
+--------------------------------------------------------------------------------
+  ✓ Full UI component library (48 components)
+  ✓ All page layouts designed
+  ✓ Routing configured
+  ✓ Design system implemented
+  ✓ TypeScript setup
+  ✓ Brutalist styling complete
+
+IN PROGRESS / CONFIGURED:
+--------------------------------------------------------------------------------
+  ⏳ Supabase backend integration
+  ⏳ Authentication flow (context ready)
+  ⏳ Real-time data fetching
+
+FUTURE ENHANCEMENTS:
+--------------------------------------------------------------------------------
+  ○ Image uploads
+  ○ Notifications system
+  ○ Search functionality
+  ○ Dark mode toggle
+  ○ Real-time messaging
+  ○ WebSocket integration
+
+ARCHITECTURE HIGHLIGHTS
+================================================================================
+
+1. Component-Based
+   Modular React components with clear separation
+
+2. Type-Safe
+   Full TypeScript coverage
+
+3. Accessible
+   Radix UI primitives ensure WCAG compliance
+
+4. Responsive
+   Mobile-first design with breakpoints
+
+5. Modern Build
+   Vite for fast HMR and optimized builds
+
+6. Scalable
+   TanStack Query for efficient data management
+
+7. Customizable
+   CSS variables for easy theming
+
+FILE STATISTICS
+================================================================================
+
+Total Pages:                10
+UI Components:              48
+Layout Components:          3
+Custom Hooks:               3
+Contexts:                   1
+Total Source Files:         ~70+
+Largest Page:               Feed.tsx (20.1 KB)
+Largest Context:            AuthContext.tsx (11.8 KB)
+
+COMPONENT BREAKDOWN
+================================================================================
+
+LAYOUT COMPONENTS (3)
+--------------------------------------------------------------------------------
+  Layout.tsx              Main layout wrapper
+  Navbar.tsx              Top navigation bar
+  MobileNav.tsx           Mobile bottom navigation
+
+PAGE COMPONENTS (10)
+--------------------------------------------------------------------------------
+  Landing.tsx             21.7 KB - Landing/login page
+  Feed.tsx                20.1 KB - Main social feed
+  Circles.tsx             11.7 KB - Communities page
+  Opportunities.tsx       10.2 KB - Jobs/internships
+  Profile.tsx             14.7 KB - User profile
+  Messages.tsx            11.1 KB - Messaging/chat
+  Create.tsx              13.2 KB - Create post/content
+  Auth.tsx                4.4 KB  - Authentication
+  NotFound.tsx            Small   - 404 error page
+  Index.tsx               Small   - Index/redirect page
+
+UI COMPONENTS (48)
+--------------------------------------------------------------------------------
+  accordion.tsx           Collapsible content sections
+  alert-dialog.tsx        Modal dialogs for alerts
+  alert.tsx               Alert messages
+  aspect-ratio.tsx        Maintain aspect ratios
+  avatar.tsx              User avatars
+  badge.tsx               Status badges
+  breadcrumb.tsx          Navigation breadcrumbs
+  button.tsx              Button component
+  calendar.tsx            Date picker calendar
+  card.tsx                Card container
+  carousel.tsx            Image/content carousel
+  chart.tsx               Chart components
+  checkbox.tsx            Checkbox input
+  collapsible.tsx         Collapsible sections
+  command.tsx             Command palette
+  context-menu.tsx        Right-click context menu
+  dialog.tsx              Modal dialogs
+  drawer.tsx              Slide-out drawer
+  dropdown-menu.tsx       Dropdown menus
+  form.tsx                Form components
+  hover-card.tsx          Hover popover cards
+  input-otp.tsx           OTP input
+  input.tsx               Text input
+  label.tsx               Form labels
+  menubar.tsx             Menu bar
+  navigation-menu.tsx     Navigation menu
+  pagination.tsx          Pagination controls
+  popover.tsx             Popover component
+  progress.tsx            Progress bars
+  radio-group.tsx         Radio button groups
+  resizable.tsx           Resizable panels
+  scroll-area.tsx         Custom scroll areas
+  select.tsx              Select dropdown
+  separator.tsx           Visual separator
+  sheet.tsx               Side sheet
+  sidebar.tsx             Sidebar component
+  skeleton.tsx            Loading skeletons
+  slider.tsx              Range slider
+  sonner.tsx              Toast notifications (Sonner)
+  switch.tsx              Toggle switch
+  table.tsx               Data tables
+  tabs.tsx                Tab navigation
+  textarea.tsx            Multi-line text input
+  toast.tsx               Toast notifications
+  toaster.tsx             Toast container
+  toggle-group.tsx        Toggle button groups
+  toggle.tsx              Toggle button
+  tooltip.tsx             Tooltips
+
+CUSTOM HOOKS (3)
+--------------------------------------------------------------------------------
+  use-mobile.tsx          Detects mobile viewport
+  use-toast.ts            Toast notification management
+  useAuth.ts              Authentication state
+
+CONTEXTS (1)
+--------------------------------------------------------------------------------
+  AuthContext.tsx         11.8 KB - Authentication context provider
+
+UTILITIES (2)
+--------------------------------------------------------------------------------
+  utils.ts                Utility functions (cn class merger)
+  supabase.ts             Supabase client configuration
+
+CONFIGURATION DETAILS
+================================================================================
+
+VITE CONFIG (vite.config.ts)
+--------------------------------------------------------------------------------
+  - React SWC plugin for fast compilation
+  - Path alias: @ → ./src
+  - Dev server: port 8080, host ::
+
+TAILWIND CONFIG (tailwind.config.ts)
+--------------------------------------------------------------------------------
+  - Custom color system (HSL variables)
+  - Custom shadows (hard-edged)
+  - Font families (Space Grotesk, Space Mono)
+  - Border radius: 0 (brutalist)
+  - Typography plugin enabled
+
+TYPESCRIPT CONFIG (tsconfig.json)
+--------------------------------------------------------------------------------
+  - Strict mode enabled
+  - Path aliases configured
+  - Modern ES target
+  - React JSX support
+
+PACKAGE.JSON SCRIPTS
+--------------------------------------------------------------------------------
+  dev             Start Vite dev server
+  build           Production build
+  build:dev       Development build
+  lint            Run ESLint
+  preview         Preview production build
+
+PROJECT METADATA
+================================================================================
+
+Project Name:           vite_react_shadcn_ts
+Version:                0.0.0
+License:                ISC
+Repository:             https://github.com/Nekyo7/fursat-nexus
+Lovable Project:        https://lovable.dev/projects/ce6caa2e-49b8-4a0c-ae66-00ad2e417be6
+
+================================================================================
+                              END OF DOCUMENT
+================================================================================
+
+This is a well-structured, modern React application with a unique brutalist 
+design aesthetic, ready for backend integration and deployment!
+
+Generated: 2025-12-03

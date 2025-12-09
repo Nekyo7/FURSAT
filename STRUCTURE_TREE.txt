@@ -1,0 +1,158 @@
+FURSAT NEXUS - VISUAL PROJECT STRUCTURE
+========================================
+
+fursat-nexus/
+│
+├── 📁 public/
+│   ├── favicon.ico
+│   ├── placeholder.svg
+│   └── robots.txt
+│
+├── 📁 src/
+│   │
+│   ├── 📁 components/
+│   │   │
+│   │   ├── 📁 layout/
+│   │   │   ├── Layout.tsx          → Main layout wrapper
+│   │   │   ├── Navbar.tsx          → Top navigation bar
+│   │   │   └── MobileNav.tsx       → Mobile bottom nav
+│   │   │
+│   │   ├── 📁 ui/                  → shadcn/ui components (50+ files)
+│   │   │   ├── accordion.tsx
+│   │   │   ├── alert.tsx
+│   │   │   ├── alert-dialog.tsx
+│   │   │   ├── avatar.tsx
+│   │   │   ├── badge.tsx
+│   │   │   ├── breadcrumb.tsx
+│   │   │   ├── button.tsx          → Primary button component
+│   │   │   ├── calendar.tsx
+│   │   │   ├── card.tsx            → Card container
+│   │   │   ├── carousel.tsx
+│   │   │   ├── chart.tsx
+│   │   │   ├── checkbox.tsx
+│   │   │   ├── collapsible.tsx
+│   │   │   ├── command.tsx
+│   │   │   ├── context-menu.tsx
+│   │   │   ├── dialog.tsx          → Modal dialogs
+│   │   │   ├── drawer.tsx
+│   │   │   ├── dropdown-menu.tsx
+│   │   │   ├── form.tsx            → Form wrapper
+│   │   │   ├── hover-card.tsx
+│   │   │   ├── input.tsx           → Text input
+│   │   │   ├── input-otp.tsx
+│   │   │   ├── label.tsx
+│   │   │   ├── menubar.tsx
+│   │   │   ├── navigation-menu.tsx
+│   │   │   ├── pagination.tsx
+│   │   │   ├── popover.tsx
+│   │   │   ├── progress.tsx
+│   │   │   ├── radio-group.tsx
+│   │   │   ├── resizable.tsx
+│   │   │   ├── scroll-area.tsx
+│   │   │   ├── select.tsx
+│   │   │   ├── separator.tsx
+│   │   │   ├── sheet.tsx
+│   │   │   ├── sidebar.tsx
+│   │   │   ├── skeleton.tsx
+│   │   │   ├── slider.tsx
+│   │   │   ├── sonner.tsx          → Toast notifications
+│   │   │   ├── switch.tsx
+│   │   │   ├── table.tsx
+│   │   │   ├── tabs.tsx
+│   │   │   ├── textarea.tsx        → Text area input
+│   │   │   ├── toast.tsx
+│   │   │   ├── toaster.tsx
+│   │   │   ├── toggle.tsx
+│   │   │   ├── toggle-group.tsx
+│   │   │   └── tooltip.tsx
+│   │   │
+│   │   └── NavLink.tsx             → Navigation link helper
+│   │
+│   ├── 📁 pages/                   → Route components
+│   │   ├── Landing.tsx             → Login-first landing page
+│   │   ├── Feed.tsx                → Main social feed (3-column)
+│   │   ├── Circles.tsx             → Communities/circles
+│   │   ├── Opportunities.tsx       → Jobs/internships board
+│   │   ├── Profile.tsx             → User profile
+│   │   ├── Messages.tsx            → Chat/messaging
+│   │   ├── Create.tsx              → Content creation
+│   │   ├── Auth.tsx                → Authentication
+│   │   ├── NotFound.tsx            → 404 page
+│   │   └── Index.tsx               → Index/redirect
+│   │
+│   ├── 📁 hooks/                   → Custom React hooks
+│   │   ├── use-mobile.tsx          → Mobile detection
+│   │   └── use-toast.ts            → Toast notifications
+│   │
+│   ├── 📁 lib/                     → Utilities
+│   │   └── utils.ts                → cn() helper function
+│   │
+│   ├── App.tsx                     → Main app (routing setup)
+│   ├── main.tsx                    → Entry point
+│   ├── index.css                   → Global styles + design tokens
+│   └── vite-env.d.ts               → Vite types
+│
+├── 📄 Configuration Files
+│   ├── package.json                → Dependencies & scripts
+│   ├── vite.config.ts              → Vite build config
+│   ├── tailwind.config.ts          → Tailwind CSS config
+│   ├── tsconfig.json               → TypeScript config
+│   ├── tsconfig.app.json           → App TS config
+│   ├── tsconfig.node.json          → Node TS config
+│   ├── eslint.config.js            → ESLint config
+│   ├── postcss.config.js           → PostCSS config
+│   ├── components.json             → shadcn/ui config
+│   └── index.html                  → HTML template
+│
+└── 📄 Documentation
+    ├── README.md
+    ├── PROJECT_STRUCTURE.md        → Detailed structure doc
+    └── STRUCTURE_TREE.txt          → This file
+
+
+ROUTE STRUCTURE
+===============
+/              → Landing.tsx (login-first page)
+/feed          → Feed.tsx (main feed)
+/circles       → Circles.tsx (communities)
+/opportunities → Opportunities.tsx (jobs/internships)
+/profile       → Profile.tsx (user profile)
+/messages      → Messages.tsx (chat)
+/create        → Create.tsx (create content)
+/auth          → Auth.tsx (authentication)
+*              → NotFound.tsx (404)
+
+
+KEY DEPENDENCIES
+================
+React 18.3.1              → UI framework
+React Router DOM 6.30.1    → Routing
+Vite 7.2.6                → Build tool
+Tailwind CSS 3.4.17       → Styling
+Radix UI                   → Accessible primitives
+shadcn/ui                  → Component library
+TanStack Query 5.83.0      → Data fetching
+React Hook Form 7.61.1     → Form handling
+Zod 3.25.76                → Schema validation
+Supabase 2.86.0            → Backend (configured)
+Lucide React 0.462.0       → Icons
+
+
+DESIGN SYSTEM
+=============
+Theme:        Brutalist (sharp edges, bold borders)
+Colors:       HSL variables (background, foreground, accent, etc.)
+Typography:   Space Grotesk (sans), Space Mono (mono)
+Shadows:      Hard-edged (no blur)
+Border Radius: 0rem (sharp corners)
+Spacing:       Tailwind default scale
+
+
+BUILD SCRIPTS
+=============
+npm run dev      → Start dev server (port 8080)
+npm run build    → Production build
+npm run build:dev → Development build
+npm run lint     → Run ESLint
+npm run preview  → Preview production build
+

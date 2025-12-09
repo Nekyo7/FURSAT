@@ -14,6 +14,11 @@ import {
   ChevronDown,
 } from "lucide-react";
 
+/**
+ * To add more opportunities, simply add a new object to the `opportunities` array below.
+ * Ensure you provide a valid `url` for the application link.
+ * The `logo` field currently takes a 2-letter string, but can be updated to an image URL if needed.
+ */
 const opportunities = [
   {
     id: 1,
@@ -30,6 +35,7 @@ const opportunities = [
     skills: ["React", "TypeScript", "CSS"],
     applicants: 234,
     saved: false,
+    url: "https://razorpay.com",
   },
   {
     id: 2,
@@ -46,6 +52,7 @@ const opportunities = [
     skills: ["Python", "PyTorch", "NLP"],
     applicants: 567,
     saved: true,
+    url: "https://www.microsoft.com/en-us/research/",
   },
   {
     id: 3,
@@ -62,6 +69,7 @@ const opportunities = [
     skills: ["Figma", "UI/UX", "Prototyping"],
     applicants: 189,
     saved: false,
+    url: "https://cred.club",
   },
   {
     id: 4,
@@ -78,6 +86,7 @@ const opportunities = [
     skills: ["Go", "PostgreSQL", "Redis"],
     applicants: 892,
     saved: false,
+    url: "https://zerodha.com/products/",
   },
 ];
 
@@ -107,6 +116,35 @@ export default function Opportunities() {
         : [...prev, filter]
     );
   };
+
+  const filteredOpps = opps.filter((opp) => {
+    // Search Filter
+    const query = searchQuery.toLowerCase();
+    const matchesSearch =
+      opp.title.toLowerCase().includes(query) ||
+      opp.company.toLowerCase().includes(query) ||
+      opp.skills.some((skill) => skill.toLowerCase().includes(query));
+
+    // Category Filters
+    if (activeFilters.length === 0) return matchesSearch;
+
+    const matchesType = activeFilters.includes(opp.type);
+    const matchesMode = activeFilters.includes(opp.mode);
+    // Duration is a bit trickier to match exactly with string includes or mapping, 
+    // but for now let's assume if any filter is active, we check if the opp matches ANY active filter category.
+    // However, usually filters are AND between categories and OR within categories.
+    // Given the simple UI (just a list of buttons), let's assume OR logic for all selected filters 
+    // OR strict matching if the filter string matches a property.
+
+    // Let's try a simpler approach: If activeFilters has items, the opp must match at least one.
+    // Or better: check if the opp's type, mode, or duration is in the activeFilters.
+    const matchesFilters =
+      activeFilters.includes(opp.type) ||
+      activeFilters.includes(opp.mode) ||
+      activeFilters.includes(opp.duration);
+
+    return matchesSearch && (activeFilters.length === 0 || matchesFilters);
+  });
 
   return (
     <Layout>
@@ -168,7 +206,7 @@ export default function Opportunities() {
         {/* Results Count */}
         <div className="flex items-center justify-between mb-4">
           <p className="text-sm text-muted-foreground">
-            Showing <strong className="text-foreground">{opps.length}</strong>{" "}
+            Showing <strong className="text-foreground">{filteredOpps.length}</strong>{" "}
             opportunities
           </p>
           <Button variant="ghost" size="sm" className="gap-2">
@@ -179,7 +217,7 @@ export default function Opportunities() {
 
         {/* Opportunities List */}
         <div className="space-y-4">
-          {opps.map((opp) => (
+          {filteredOpps.map((opp) => (
             <article
               key={opp.id}
               className="bg-card border-2 border-foreground shadow-sm hover:shadow-md transition-all"
@@ -211,14 +249,24 @@ export default function Opportunities() {
                           onClick={() => toggleSave(opp.id)}
                         >
                           <Bookmark
-                            className={`w-5 h-5 ${
-                              opp.saved ? "fill-current text-secondary" : ""
-                            }`}
+                            className={`w-5 h-5 ${opp.saved ? "fill-current text-secondary" : ""
+                              }`}
                           />
                         </Button>
-                        <Button variant="accent" size="sm" className="gap-1">
-                          Apply
-                          <ExternalLink className="w-3 h-3" />
+                        <Button
+                          variant="accent"
+                          size="sm"
+                          className="gap-1"
+                          asChild
+                        >
+                          <a
+                            href={opp.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Apply
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
                         </Button>
                       </div>
                     </div>
@@ -271,9 +319,8 @@ export default function Opportunities() {
                 <div className="flex items-center justify-between mt-4 pt-4 border-t-2 border-muted text-xs text-muted-foreground">
                   <span>Posted {opp.posted}</span>
                   <span
-                    className={`font-bold ${
-                      opp.deadline === "Rolling" ? "text-success" : "text-warning"
-                    }`}
+                    className={`font-bold ${opp.deadline === "Rolling" ? "text-success" : "text-warning"
+                      }`}
                   >
                     Deadline: {opp.deadline}
                   </span>

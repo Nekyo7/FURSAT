@@ -1,15 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { 
-  Users, 
-  MessageSquare, 
-  Briefcase, 
-  Calendar, 
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
+import {
+  Users,
+  MessageSquare,
+  Briefcase,
+  Calendar,
   Trophy,
   ArrowRight,
   Zap,
   Shield,
-  Star
+  Star,
+  Lock,
+  Activity,
+  Radio,
+  Camera,
+  Flame,
 } from "lucide-react";
 
 const features = [
@@ -46,7 +57,107 @@ const stats = [
   { value: "1M+", label: "Posts" },
 ];
 
+const loginHighlights = [
+  { label: "VERIFIED ENTRY", detail: ".edu emails only", tone: "bg-secondary" },
+  { label: "ZERO NOISE", detail: "Real clubs + real peers", tone: "bg-accent" },
+  { label: "TRUSTED DROPS", detail: "Vetted gigs + events", tone: "bg-info" },
+];
+
+const bulletin = [
+  {
+    title: "Product Sprint Applications",
+    meta: "Closes 14 Dec • 200 seats",
+    tag: "Opportunities",
+  },
+  {
+    title: "Campus Fest Aftermovie Drop",
+    meta: "Premiere 9 PM • Media Circle",
+    tag: "Feed",
+  },
+  {
+    title: "Debate League Finals",
+    meta: "Livestream Saturday • Circle Wars",
+    tag: "Circles",
+  },
+];
+
+const feedPeeks = [
+  {
+    label: "Story drop",
+    title: "Hostel rooftop session got wild 🔥",
+    color: "bg-secondary",
+  },
+  {
+    label: "Opportunity ping",
+    title: "Wipro design residency added to board",
+    color: "bg-accent",
+  },
+  {
+    label: "Circle battle",
+    title: "Tech vs Arts meme wars live now",
+    color: "bg-info",
+  },
+];
+
 export default function Landing() {
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { signIn, signUp, user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect if user is logged in (but wait for auth to finish loading)
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate("/feed", { replace: true });
+    }
+  }, [user, authLoading, navigate]);
+
+  // Show minimal loading while auth is initializing (only briefly)
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-foreground border-t-transparent animate-spin mx-auto mb-4" />
+          <p className="font-mono text-sm">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render landing page if user is logged in (will redirect)
+  if (user) {
+    return null;
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      if (isLogin) {
+        await signIn(email, password);
+        toast.success("Logged in successfully!");
+        window.location.href = "/feed";
+      } else {
+        if (!username.trim()) {
+          toast.error("Username is required");
+          setLoading(false);
+          return;
+        }
+        await signUp(email, password, username);
+        toast.success("Account created! Check your email to verify.");
+        setIsLogin(true);
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -73,135 +184,237 @@ export default function Landing() {
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="border-b-2 border-foreground">
-        <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
+      {/* Login-first Hero */}
+      <section className="border-b-2 border-foreground bg-muted/30">
+        <div className="max-w-6xl mx-auto px-4 py-16 md:py-24">
+          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-start">
             <div>
-              <div className="inline-block bg-secondary border-2 border-foreground px-3 py-1 mb-4 shadow-xs">
-                <span className="font-mono text-sm font-bold">FOR STUDENTS, BY STUDENTS</span>
+              <div className="inline-flex items-center gap-2 bg-secondary border-2 border-foreground px-3 py-1 mb-6 shadow-xs uppercase font-mono text-xs tracking-wide">
+                <Lock className="w-4 h-4" />
+                VERIFIED CAMPUS LOGIN
               </div>
-              <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-                YOUR
-                <br />
-                <span className="bg-accent inline-block px-2 -rotate-1 border-2 border-foreground shadow-sm">
-                  CAMPUS
+              <h1 className="text-5xl md:text-7xl font-black leading-tight mb-6">
+                DROP
+                <span className="bg-accent inline-block px-3 rotate-1 mx-2 border-2 border-foreground shadow-sm">
+                  IN
                 </span>
-                <br />
-                UNIVERSE
+                WITHOUT THE NOISE.
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-md">
-                One app for everything college. Social feeds, communities, 
-                opportunities, events — all in one brutally honest platform.
+              <p className="text-lg md:text-xl text-muted-foreground max-w-xl mb-8">
+                This isn&apos;t another glossy landing page. It&apos;s the front door
+                to the most brutally honest student feed on campus. Log in, see what
+                your circles are plotting, and claim the gigs before they vanish.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Link to="/feed">
-                  <Button variant="hero" size="xl" className="gap-2">
-                    Explore Now
-                    <ArrowRight className="w-5 h-5" />
-                  </Button>
-                </Link>
-                <Link to="/auth">
-                  <Button variant="outline" size="xl">
-                    Join Free
-                  </Button>
-                </Link>
+              <div className="grid sm:grid-cols-3 gap-4">
+                {loginHighlights.map((item) => (
+                  <div
+                    key={item.label}
+                    className={`${item.tone} border-2 border-foreground px-4 py-5 shadow-sm`}
+                  >
+                    <p className="font-mono text-xs mb-1">{item.label}</p>
+                    <p className="font-bold text-sm">{item.detail}</p>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="relative">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <div className="bg-card border-2 border-foreground p-4 shadow-md">
-                    <div className="w-full aspect-square bg-accent/30 border-2 border-foreground mb-3" />
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-secondary border-2 border-foreground" />
-                      <div>
-                        <p className="font-bold text-sm">@student_life</p>
-                        <p className="text-xs text-muted-foreground">2h ago</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-secondary border-2 border-foreground p-4 shadow-md">
-                    <p className="font-mono text-sm font-bold mb-2">TRENDING</p>
-                    <p className="font-bold">#CampusFest2024</p>
-                    <p className="text-sm text-muted-foreground">12K posts</p>
-                  </div>
+            <div className="bg-card border-2 border-foreground shadow-xl p-6 md:p-8 relative">
+              <div className="absolute -top-4 -left-4 bg-accent border-2 border-foreground px-3 py-1 font-mono text-xs shadow-sm rotate-[-2deg]">
+                CAMPUS ACCESS ONLY
+              </div>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-secondary border-2 border-foreground flex items-center justify-center">
+                  <Lock className="w-5 h-5" />
                 </div>
-                <div className="space-y-4 mt-8">
-                  <div className="bg-info border-2 border-foreground p-4 shadow-md text-info-foreground">
-                    <Briefcase className="w-8 h-8 mb-2" />
-                    <p className="font-bold">New Internship</p>
-                    <p className="text-sm opacity-90">Google • Remote</p>
-                  </div>
-                  <div className="bg-card border-2 border-foreground p-4 shadow-md">
-                    <Trophy className="w-8 h-8 mb-2 text-secondary" />
-                    <p className="font-bold text-sm">+500 XP</p>
-                    <p className="text-xs text-muted-foreground">Level up!</p>
-                  </div>
+                <div>
+                  <p className="font-mono text-xs text-muted-foreground">
+                    {isLogin ? "LOGIN" : "SIGN UP"}
+                  </p>
+                  <h2 className="text-2xl font-bold">
+                    {isLogin ? "Enter the brutalist feed" : "Join the campus universe"}
+                  </h2>
                 </div>
               </div>
-              <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-accent border-2 border-foreground shadow-lg -rotate-6 flex items-center justify-center">
-                <Star className="w-12 h-12" />
-              </div>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {!isLogin && (
+                  <div className="space-y-2">
+                    <Label htmlFor="username" className="font-bold text-sm">
+                      Username
+                    </Label>
+                    <Input
+                      id="username"
+                      type="text"
+                      placeholder="your_username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="border-2 border-foreground rounded-none focus-visible:ring-0"
+                      required={!isLogin}
+                    />
+                  </div>
+                )}
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="font-bold text-sm">
+                    Campus Email
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="you@college.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="border-2 border-foreground rounded-none focus-visible:ring-0"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="font-bold text-sm">
+                    Password
+                  </Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="border-2 border-foreground rounded-none focus-visible:ring-0"
+                    required
+                  />
+                </div>
+                {isLogin && (
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <label className="flex items-center gap-2">
+                      <Checkbox id="remember" className="border-foreground rounded-none" />
+                      Remember me
+                    </label>
+                    <Link to="/auth?mode=reset" className="underline">
+                      Forgot?
+                    </Link>
+                  </div>
+                )}
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full gap-2 font-black tracking-wide"
+                  disabled={loading}
+                >
+                  {loading ? "Loading..." : isLogin ? "Log In" : "Sign Up"}
+                  {!loading && <ArrowRight className="w-5 h-5" />}
+                </Button>
+                <p className="text-sm text-muted-foreground text-center">
+                  {isLogin ? (
+                    <>
+                      Need an account?{" "}
+                      <button
+                        type="button"
+                        onClick={() => setIsLogin(false)}
+                        className="underline font-semibold"
+                      >
+                        Sign up
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      Already have an account?{" "}
+                      <button
+                        type="button"
+                        onClick={() => setIsLogin(true)}
+                        className="underline font-semibold"
+                      >
+                        Log in
+                      </button>
+                    </>
+                  )}
+                </p>
+              </form>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
+      {/* Live Bulletin */}
       <section className="border-b-2 border-foreground bg-primary text-primary-foreground">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4">
-            {stats.map((stat, i) => (
-              <div
-                key={stat.label}
-                className={`py-8 px-4 text-center ${
-                  i !== stats.length - 1 ? "border-r-2 border-primary-foreground/30" : ""
-                }`}
-              >
-                <p className="text-4xl md:text-5xl font-bold mb-1">{stat.value}</p>
-                <p className="font-mono text-sm opacity-80">{stat.label}</p>
-              </div>
-            ))}
+        <div className="max-w-6xl mx-auto px-4 py-10">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-center gap-3">
+              <Radio className="w-5 h-5" />
+              <p className="font-mono text-xs tracking-[0.2em]">LIVE CAMPUS BULLETIN</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-4">
+              {bulletin.map((item) => (
+                <div
+                  key={item.title}
+                  className="border-2 border-primary-foreground bg-primary text-left px-5 py-6 shadow-xs"
+                >
+                  <p className="font-mono text-[11px] mb-2 opacity-80">{item.tag}</p>
+                  <p className="font-semibold text-xl mb-1">{item.title}</p>
+                  <p className="text-sm opacity-70">{item.meta}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features */}
       <section className="border-b-2 border-foreground">
-        <div className="max-w-7xl mx-auto px-4 py-16">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              EVERYTHING YOU NEED
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              No more switching between apps. Fursat brings your entire college 
-              experience into one unified, brutally efficient platform.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature) => {
-              const Icon = feature.icon;
-              return (
+        <div className="max-w-6xl mx-auto px-4 py-16">
+          <div className="grid lg:grid-cols-[1fr_0.6fr] gap-10 items-start">
+            <div>
+              <div className="flex items-center gap-3 mb-6">
+                <Activity className="w-6 h-6" />
+                <p className="font-mono text-sm">BRUTALIST STACK</p>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                EVERYTHING THAT MAKES CAMPUS ALIVE
+              </h2>
+              <p className="text-muted-foreground text-lg mb-8">
+                Feed, circles, gigs, events – all stitched into one unapologetically
+                raw interface. Zero gradients, all signal.
+              </p>
+              <div className="grid sm:grid-cols-2 gap-5">
+                {features.slice(0, 4).map((feature) => {
+                  const Icon = feature.icon;
+                  return (
+                    <div
+                      key={feature.title}
+                      className="bg-card border-2 border-foreground p-5 shadow-sm"
+                    >
+                      <div
+                        className={`w-12 h-12 ${feature.color} border-2 border-foreground flex items-center justify-center mb-4`}
+                      >
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <h3 className="font-bold mb-1">{feature.title}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {feature.description}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="bg-muted border-2 border-foreground p-6 space-y-4 shadow-inner">
+              <div className="flex items-center gap-3">
+                <Camera className="w-5 h-5" />
+                <p className="font-mono text-xs">FEED SNEAK PEEK</p>
+              </div>
+              {feedPeeks.map((peek) => (
                 <div
-                  key={feature.title}
-                  className="group bg-card border-2 border-foreground p-6 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all"
+                  key={peek.title}
+                  className="border-2 border-foreground bg-background px-4 py-4 flex flex-col gap-1"
                 >
-                  <div className={`w-14 h-14 ${feature.color} border-2 border-foreground flex items-center justify-center mb-4 shadow-xs group-hover:shadow-sm transition-all`}>
-                    <Icon className="w-7 h-7" />
-                  </div>
-                  <h3 className="font-bold text-xl mb-2">{feature.title}</h3>
-                  <p className="text-muted-foreground">{feature.description}</p>
+                  <p className="font-mono text-[11px] tracking-wide">{peek.label}</p>
+                  <p className="text-lg font-semibold">{peek.title}</p>
+                  <div className={`w-6 h-1 ${peek.color}`} />
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* USP Section */}
       <section className="border-b-2 border-foreground bg-secondary">
-        <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="max-w-6xl mx-auto px-4 py-16">
           <div className="grid md:grid-cols-3 gap-8">
             <div className="flex gap-4">
               <div className="w-12 h-12 bg-background border-2 border-foreground flex items-center justify-center shrink-0 shadow-xs">
@@ -242,23 +455,42 @@ export default function Landing() {
 
       {/* CTA */}
       <section className="border-b-2 border-foreground">
-        <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">
-            READY TO
-            <span className="bg-accent inline-block px-3 mx-2 rotate-1 border-2 border-foreground shadow-sm">
-              JOIN
-            </span>
-            ?
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-xl mx-auto">
-            Your college email is your ticket. Sign up in 30 seconds.
-          </p>
-          <Link to="/auth">
-            <Button variant="hero" size="xl" className="gap-2">
-              Get Started Free
-              <ArrowRight className="w-5 h-5" />
-            </Button>
-          </Link>
+        <div className="max-w-6xl mx-auto px-4 py-20">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                STILL READING?
+                <span className="bg-accent border-2 border-foreground px-3 mx-2 rotate-1 inline-block">
+                  LOG IN
+                </span>
+                AND SEE FOR YOURSELF.
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                The feed resets every 24 hours. Opportunities go first-come-first-serve.
+                Don&apos;t wait for screenshots.
+              </p>
+            </div>
+            <div className="bg-card border-2 border-foreground p-6 shadow-md">
+              <div className="flex items-center justify-between mb-4">
+                <p className="font-mono text-xs">SYSTEM STATUS</p>
+                <Flame className="w-4 h-4" />
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                {stats.map((stat) => (
+                  <div key={stat.label} className="border-2 border-dashed border-foreground/60 px-3 py-4">
+                    <p className="text-2xl font-black">{stat.value}</p>
+                    <p className="font-mono text-[11px]">{stat.label}</p>
+                  </div>
+                ))}
+              </div>
+              <Button asChild className="w-full mt-6 gap-2 font-black">
+                <Link to="/auth">
+                  Go to login
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
 
