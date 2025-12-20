@@ -246,6 +246,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     if (data.user) {
+      // IMMEDIATE STATE UPDATE: Prevents race condition with ProtectedRoute
+      setUser(data.user);
+      if (data.session) {
+        setSession(data.session);
+      }
+
       console.log("✅ Signed in, fetching profile...");
       const profileData = await fetchProfile(data.user.id);
       if (profileData) {
