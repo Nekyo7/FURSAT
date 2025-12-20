@@ -16,7 +16,6 @@ import {
   Video,
   Smile,
   Send,
-  Filter,
   Flame,
   Activity,
   Hash,
@@ -38,13 +37,7 @@ import { PostCard } from "@/components/PostCard";
 // Removed static stories array
 
 
-const quickFilters = [
-  "For you",
-  "Club drops",
-  "Opportunities",
-  "Confessions",
-  "Afterhours",
-];
+
 
 const campusPulse = [
   { label: "Active circles", value: "36 debates live", accent: "bg-accent" },
@@ -77,7 +70,7 @@ const xpLeaderboard = [
 ];
 
 export default function Feed() {
-  const [activeFilter, setActiveFilter] = useState(quickFilters[0]);
+
   const [createPostOpen, setCreatePostOpen] = useState(false);
   const [storyUploaderOpen, setStoryUploaderOpen] = useState(false);
   const [viewingStoryUser, setViewingStoryUser] = useState<string | null>(null);
@@ -164,28 +157,7 @@ export default function Feed() {
           {/* Middle column */}
           <section className="space-y-6">
             <div className="bg-card border-2 border-foreground p-4 shadow-sm">
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <div className="flex items-center gap-2 font-mono text-xs uppercase">
-                  <Filter className="w-4 h-4" />
-                  signal filters
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {quickFilters.map((filter) => (
-                    <Button
-                      key={filter}
-                      size="sm"
-                      variant={filter === activeFilter ? "default" : "ghost"}
-                      className={`rounded-none px-4 ${filter === activeFilter
-                        ? "border-2 border-foreground"
-                        : "border border-dashed border-foreground"
-                        }`}
-                      onClick={() => setActiveFilter(filter)}
-                    >
-                      {filter}
-                    </Button>
-                  ))}
-                </div>
-              </div>
+
               <div className="flex flex-wrap gap-3 text-xs font-mono border-t border-muted pt-3">
                 <span className="flex items-center gap-2">
                   <Flame className="w-4 h-4" />

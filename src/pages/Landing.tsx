@@ -142,6 +142,12 @@ export default function Landing() {
         toast.success("Logged in successfully!");
         window.location.href = "/feed";
       } else {
+        if (!email.toLowerCase().trim().endsWith("@bmsit.in")) {
+          toast.error("Only @bmsit.in emails are allowed to sign up");
+          setLoading(false);
+          return;
+        }
+
         if (!username.trim()) {
           toast.error("Username is required");
           setLoading(false);

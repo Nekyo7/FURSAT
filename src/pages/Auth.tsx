@@ -41,6 +41,11 @@ export default function Auth() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isLogin && !email.toLowerCase().trim().endsWith("@bmsit.in")) {
+      toast.error("Only @bmsit.in emails are allowed to sign up");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -65,7 +70,7 @@ export default function Auth() {
         setUsername("");
       }
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+      toast.error(err.message || "Something went wrong i hold my head. mj gone. i nigga dead. ");
     } finally {
       setLoading(false);
     }
