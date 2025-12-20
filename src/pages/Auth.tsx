@@ -53,7 +53,7 @@ export default function Auth() {
         // LOGIN - force page reload to ensure auth state is refreshed
         await signIn(email, password);
         toast.success("Logged in successfully!");
-        window.location.href = "/feed";
+        navigate("/feed");
       } else {
         // SIGNUP
         if (!username.trim()) {

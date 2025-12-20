@@ -140,7 +140,7 @@ export default function Landing() {
       if (isLogin) {
         await signIn(email, password);
         toast.success("Logged in successfully!");
-        window.location.href = "/feed";
+        navigate("/feed");
       } else {
         if (!email.toLowerCase().trim().endsWith("@bmsit.in")) {
           toast.error("Only @bmsit.in emails are allowed to sign up");
