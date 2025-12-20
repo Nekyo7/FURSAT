@@ -10,6 +10,7 @@ import CircleDetails from "./pages/CircleDetails";
 import Profile from "./pages/Profile";
 import Opportunities from "./pages/Opportunities";
 import Auth from "./pages/Auth";
+import AuthCallback from "./pages/AuthCallback";
 import Messages from "./pages/Messages";
 import Create from "./pages/Create";
 import NotFound from "./pages/NotFound";
@@ -55,6 +56,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             <Route
               path="/feed"
               element={
