@@ -105,6 +105,7 @@ export function AvatarUpload({ currentAvatarUrl, onUploadComplete }: AvatarUploa
             />
 
             <Button
+                type="button"
                 variant="outline"
                 size="sm"
                 onClick={() => fileInputRef.current?.click()}
