@@ -372,7 +372,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (updatedProfile) {
       console.log("✅ Profile updated:", updatedProfile);
-      setProfile(updatedProfile);
+      // Ensure specific fields are updated in state immediately if they aren't returned for some reason
+      // But apiUpdateProfile returns the selected row so it should be fine.
+      // We spread to ensure new reference just in case
+      setProfile({ ...updatedProfile });
     }
   };
 

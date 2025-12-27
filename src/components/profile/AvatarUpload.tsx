@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
@@ -16,6 +16,10 @@ export function AvatarUpload({ currentAvatarUrl, onUploadComplete }: AvatarUploa
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(currentAvatarUrl || null);
+
+    useEffect(() => {
+        setPreviewUrl(currentAvatarUrl || null);
+    }, [currentAvatarUrl]);
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         try {

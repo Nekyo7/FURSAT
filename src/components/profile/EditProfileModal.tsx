@@ -26,6 +26,7 @@ export function EditProfileModal() {
     });
 
     // Reset form data when modal opens or profile changes
+    // Reset form data when modal opens
     useEffect(() => {
         if (open && profile) {
             setFormData({
@@ -39,7 +40,7 @@ export function EditProfileModal() {
             });
             setError(null);
         }
-    }, [open, profile]);
+    }, [open]); // Only run when opening the modal
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });

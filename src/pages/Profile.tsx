@@ -103,6 +103,7 @@ export default function Profile() {
                 <span className="font-bold text-3xl">
                   {profile?.avatar_url ? (
                     <img
+                      key={profile.avatar_url}
                       src={profile.avatar_url}
                       alt="Profile"
                       className="w-full h-full object-cover"

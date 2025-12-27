@@ -11,17 +11,15 @@ interface ProfileCompletionMeterProps {
     userId: string;
     isOwnProfile: boolean;
     className?: string; // Add className prop for better flexibility
-    forceRefresh?: boolean; // Trigger refresh from parent
+    refreshTrigger?: number; // Trigger refresh from parent
 }
 
-export function ProfileCompletionMeter({ userId, isOwnProfile, className, forceRefresh }: ProfileCompletionMeterProps) {
+export function ProfileCompletionMeter({ userId, isOwnProfile, className, refreshTrigger }: ProfileCompletionMeterProps) {
     const { completion, loading, refresh } = useProfileCompletion(userId);
 
-    // Expose refresh if needed, or rely on internal logic
-    // If forceRefresh changes, we could re-fetch
-    // But useProfileCompletion already listens to profile/userId changes.
-    // The completion hook listens to profile changes. 
-    // We might need to listen to 'forceRefresh' toggle if provided.
+    useEffect(() => {
+        refresh();
+    }, [refreshTrigger]);
 
     if (!isOwnProfile) return null; // Only show for the user themselves
 
@@ -33,9 +31,9 @@ export function ProfileCompletionMeter({ userId, isOwnProfile, className, forceR
             <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
                     <CardTitle className="text-lg font-bold">Profile Completion</CardTitle>
-                    <span className="text-xl font-black text-primary">{completion.percentage}%</span>
+                    <span className="text-xl font-black text-primary transition-all duration-500 ease-in-out">{completion.percentage}%</span>
                 </div>
-                <Progress value={completion.percentage} className="h-3 border border-foreground" />
+                <Progress value={completion.percentage} className="h-3 border border-foreground transition-all duration-500" />
             </CardHeader>
             <CardContent>
                 <div className="space-y-3 mt-2">
