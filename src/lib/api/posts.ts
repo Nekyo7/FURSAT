@@ -14,6 +14,7 @@ export interface Post {
         username: string;
         email: string;
         full_name?: string;
+        avatar_url?: string | null;
     };
     likes_count?: number;
     is_liked?: boolean;
@@ -147,16 +148,17 @@ export async function getPosts(circleId?: string): Promise<Post[]> {
         // Fetch profiles for all users
         const { data: profiles } = await supabase
             .from("profiles")
-            .select("id, username, email, full_name")
+            .select("id, username, email, full_name, avatar_url")
             .in("id", userIds);
 
         // Create a map of user_id to profile
-        const profileMap: Record<string, { username: string; email: string; full_name?: string }> = {};
+        const profileMap: Record<string, { username: string; email: string; full_name?: string; avatar_url?: string | null }> = {};
         profiles?.forEach((profile) => {
             profileMap[profile.id] = {
                 username: profile.username || "Anonymous",
                 email: profile.email,
                 full_name: profile.full_name,
+                avatar_url: profile.avatar_url,
             };
         });
 

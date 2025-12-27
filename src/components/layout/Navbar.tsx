@@ -147,12 +147,21 @@ export function Navbar() {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm" className="gap-2">
-                      <div className="w-6 h-6 bg-accent border-2 border-foreground flex items-center justify-center">
-                        <span className="font-bold text-xs">
-                          {profile?.username && profile.username.trim()
-                            ? profile.username.slice(0, 2).toUpperCase()
-                            : user.email?.slice(0, 2).toUpperCase() || "U"}
-                        </span>
+                      <div className="w-6 h-6 bg-accent border-2 border-foreground flex items-center justify-center overflow-hidden relative">
+                        {profile?.avatar_url ? (
+                          <img
+                            key={profile.avatar_url}
+                            src={profile.avatar_url}
+                            alt={profile.username || "User"}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="font-bold text-xs">
+                            {profile?.username && profile.username.trim()
+                              ? profile.username.slice(0, 2).toUpperCase()
+                              : user.email?.slice(0, 2).toUpperCase() || "U"}
+                          </span>
+                        )}
                       </div>
                       <span className="hidden md:inline font-semibold">
                         {profile?.username && profile.username.trim()

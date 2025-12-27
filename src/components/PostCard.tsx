@@ -45,10 +45,18 @@ export function PostCard({ post, currentUserId, onDelete, onUpdate }: PostCardPr
             {/* Post Header */}
             <div className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 bg-secondary border-2 border-foreground flex items-center justify-center">
-                        <span className="font-bold text-sm">
-                            {post.profiles?.username?.slice(0, 2).toUpperCase() || "U"}
-                        </span>
+                    <div className="w-11 h-11 bg-secondary border-2 border-foreground flex items-center justify-center overflow-hidden relative">
+                        {post.profiles?.avatar_url ? (
+                            <img
+                                src={post.profiles.avatar_url}
+                                alt={post.profiles.username}
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <span className="font-bold text-sm">
+                                {post.profiles?.username?.slice(0, 2).toUpperCase() || "U"}
+                            </span>
+                        )}
                     </div>
                     <div>
                         <div className="flex items-center gap-1">
