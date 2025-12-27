@@ -21,6 +21,7 @@ import {
 import { EditProfileModal } from "@/components/profile/EditProfileModal";
 import { SkillsSection } from "@/components/profile/SkillsSection";
 import { ProjectsSection } from "@/components/profile/ProjectsSection";
+import { ProfileCompletionMeter } from "@/components/profile/ProfileCompletionMeter";
 
 const badges = [
   { icon: Trophy, label: "Top Contributor", color: "bg-secondary" },
@@ -78,6 +79,11 @@ type TabType = "posts" | "projects" | "saved";
 export default function Profile() {
   const [activeTab, setActiveTab] = useState<TabType>("posts");
   const { profile, user } = useAuth();
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const handleUpdate = () => {
+    setRefreshTrigger(prev => prev + 1);
+  };
 
   const tabs = [
     { key: "posts" as TabType, icon: Grid, label: "Posts" },
@@ -95,9 +101,17 @@ export default function Profile() {
             <div className="absolute -bottom-12 left-6">
               <div className="w-24 h-24 bg-background border-4 border-foreground shadow-md flex items-center justify-center">
                 <span className="font-bold text-3xl">
-                  {profile?.username && profile.username.trim()
-                    ? profile.username.slice(0, 2).toUpperCase()
-                    : user?.email?.slice(0, 2).toUpperCase() || "U"}
+                  {profile?.avatar_url ? (
+                    <img
+                      src={profile.avatar_url}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    profile?.username && profile.username.trim()
+                      ? profile.username.slice(0, 2).toUpperCase()
+                      : user?.email?.slice(0, 2).toUpperCase() || "U"
+                  )}
                 </span>
               </div>
             </div>
@@ -200,8 +214,19 @@ export default function Profile() {
         <div className="grid md:grid-cols-[280px_1fr] gap-6">
           {/* Sidebar */}
           <aside className="space-y-6">
+            {/* Completion Meter */}
+            <ProfileCompletionMeter
+              userId={user?.id || ""}
+              isOwnProfile={!!user}
+              refreshTrigger={refreshTrigger}
+            />
+
             {/* Skills */}
-            <SkillsSection userId={user?.id || ""} isOwnProfile={!!user} />
+            <SkillsSection
+              userId={user?.id || ""}
+              isOwnProfile={!!user}
+              onUpdate={handleUpdate}
+            />
 
             {/* Experience */}
             <div className="bg-card border-2 border-foreground shadow-sm">
@@ -284,7 +309,11 @@ export default function Profile() {
 
             {/* Tab Content */}
             {activeTab === "projects" && (
-              <ProjectsSection userId={user?.id || ""} isOwnProfile={!!user} />
+              <ProjectsSection
+                userId={user?.id || ""}
+                isOwnProfile={!!user}
+                onUpdate={handleUpdate}
+              />
             )}
 
             {activeTab === "posts" && (

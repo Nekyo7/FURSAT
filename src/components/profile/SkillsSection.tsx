@@ -9,9 +9,10 @@ import { useToast } from "@/hooks/use-toast";
 interface SkillsSectionProps {
     userId: string;
     isOwnProfile: boolean;
+    onUpdate?: () => void;
 }
 
-export function SkillsSection({ userId, isOwnProfile }: SkillsSectionProps) {
+export function SkillsSection({ userId, isOwnProfile, onUpdate }: SkillsSectionProps) {
     const [skills, setSkills] = useState<Skill[]>([]);
     const [newSkill, setNewSkill] = useState("");
     const [loading, setLoading] = useState(false);
@@ -39,6 +40,7 @@ export function SkillsSection({ userId, isOwnProfile }: SkillsSectionProps) {
             const skill = await addSkill(newSkill);
             setSkills([...skills, skill]);
             setNewSkill("");
+            onUpdate?.();
             toast({
                 title: "Skill added",
                 description: "Your skill has been added successfully.",
@@ -58,6 +60,7 @@ export function SkillsSection({ userId, isOwnProfile }: SkillsSectionProps) {
         try {
             await deleteSkill(skillId);
             setSkills(skills.filter(s => s.id !== skillId));
+            onUpdate?.();
             toast({
                 title: "Skill deleted",
                 description: "Skill removed from your profile.",

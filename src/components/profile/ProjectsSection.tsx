@@ -11,9 +11,10 @@ import { useToast } from "@/hooks/use-toast";
 interface ProjectsSectionProps {
     userId: string;
     isOwnProfile: boolean;
+    onUpdate?: () => void;
 }
 
-export function ProjectsSection({ userId, isOwnProfile }: ProjectsSectionProps) {
+export function ProjectsSection({ userId, isOwnProfile, onUpdate }: ProjectsSectionProps) {
     const [projects, setProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState(false);
     const { toast } = useToast();
@@ -36,6 +37,7 @@ export function ProjectsSection({ userId, isOwnProfile }: ProjectsSectionProps) 
         try {
             await deleteProject(id);
             setProjects(projects.filter(p => p.id !== id));
+            onUpdate?.();
             toast({ title: "Project deleted" });
         } catch (error) {
             toast({ title: "Error deleting project", variant: "destructive" });
@@ -49,6 +51,7 @@ export function ProjectsSection({ userId, isOwnProfile }: ProjectsSectionProps) 
                     onSave={async (data) => {
                         const newProject = await addProject(data);
                         setProjects([newProject, ...projects]);
+                        onUpdate?.();
                     }}
                     trigger={
                         <Button variant="outline" className="w-full border-2 border-dashed border-muted-foreground/50 hover:border-foreground hover:bg-muted">

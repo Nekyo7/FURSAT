@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexts/AuthContext";
 import { Edit3 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { AvatarUpload } from "@/components/profile/AvatarUpload";
 
 export function EditProfileModal() {
     const { profile, updateUserProfile } = useAuth();
@@ -21,6 +22,7 @@ export function EditProfileModal() {
         headline: "",
         location: "",
         website: "",
+        avatar_url: "",
     });
 
     // Reset form data when modal opens or profile changes
@@ -33,6 +35,7 @@ export function EditProfileModal() {
                 headline: profile.headline || "",
                 location: profile.location || "",
                 website: profile.website || "",
+                avatar_url: profile.avatar_url || "",
             });
             setError(null);
         }
@@ -46,17 +49,17 @@ export function EditProfileModal() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
-        
+
         try {
             setLoading(true);
-            
+
             // Validate username if provided
             if (formData.username.trim() && formData.username.trim().length < 3) {
                 setError("Username must be at least 3 characters long");
                 setLoading(false);
                 return;
             }
-            
+
             // Build update data - convert empty strings to null for optional fields
             // Always include all fields so we can clear them if needed
             const updateData: Record<string, string | null> = {
@@ -66,15 +69,16 @@ export function EditProfileModal() {
                 headline: formData.headline.trim() || null,
                 location: formData.location.trim() || null,
                 website: formData.website.trim() || null,
+                avatar_url: formData.avatar_url || null,
             };
-            
+
             await updateUserProfile(updateData);
-            
+
             toast({
                 title: "Profile updated",
                 description: "Your profile has been successfully updated.",
             });
-            
+
             setOpen(false);
         } catch (error: any) {
             console.error("Failed to update profile", error);
@@ -103,11 +107,12 @@ export function EditProfileModal() {
                     <DialogTitle>Edit Profile</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    {error && (
-                        <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-md border border-destructive/20">
-                            {error}
-                        </div>
-                    )}
+
+                    <AvatarUpload
+                        currentAvatarUrl={formData.avatar_url}
+                        onUploadComplete={(url) => setFormData({ ...formData, avatar_url: url })}
+                    />
+
                     <div className="space-y-2">
                         <Label htmlFor="username">Username</Label>
                         <Input
